@@ -8,9 +8,17 @@ function usePagination({ currentPage, totalCount, pageSize }) {
     Please replace this comment here with a description of this hook.
     
   */
+
+  // this function will return the pagination to be displayed, which the following edgecases
+  // If there is only one page, display 1
+  // 1, 2, 3 ...13
+  // 1 ...11, 12, 13
+  // 1 ... 2, 3, 4 ...13
+
   // Calculate the total number of pages
   const totalPages = Math.ceil(totalCount / pageSize);
   // empty array to store the pagination
+  //using const bc we are reassigning variable
   let pages = [];
 
   // If there is only one page, display 1
@@ -20,31 +28,27 @@ function usePagination({ currentPage, totalCount, pageSize }) {
   // 1, 2, 3 ...13
   if (currentPage <= 2) {
     for (let i = 1; i <= 3; i++) {
-      pages.push(i);
+      pages = [...pages, i];
     }
-    pages.push(DOTS);
-    pages.push(totalPages);
+    pages = [...pages, DOTS, totalPages];
     return pages;
 
     // 1 ...11, 12, 13
   } else if (currentPage >= totalPages - 1) {
-    pages.push(1);
-    pages.push(DOTS);
+    pages = [...pages, 1, DOTS];
     for (let i = totalPages - 2; i <= totalPages; i++) {
-      pages.push(i);
+      pages = [...pages, i];
     }
     return pages;
   }
 
   // 1 ... 2, 3, 4 ...13
   else {
-    pages.push(1);
-    pages.push(DOTS);
+    pages = [...pages, 1, DOTS];
     for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-      pages.push(i);
+      pages = [...pages, i];
     }
-    pages.push(DOTS);
-    pages.push(totalPages);
+    pages = [...pages, DOTS, totalPages];
     return pages;
   }
 }
